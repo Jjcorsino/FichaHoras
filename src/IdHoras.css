@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  background-image: url(https://jjcorsino.github.io/React-To-Do/static/media/fondo.a353121b55e95e465a8a.jpg);
+  background-color: #000;
+}
+
+.todo-container {
+  background: url(https://jjcorsino.github.io/React-To-Do/static/media/container.69abb3cf6ed793b0ea71.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+.todo-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.todo-container input[type='text'] {
+  width: 47%;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+
+}
+
+.todo-container input[type='texto'] {
+  width: 5%;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.todo-container select {
+  width: 15%;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+
+}
+
+.todo-container button {
+  padding: 10px 20px;
+  margin-left: 20px;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  background-color: #ae8c57;
+  color: #fff;
+  cursor: pointer;
+}
+
+.todo-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-container li {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #000;
+  font-weight: bold;
+  margin-left: 20px;
+  padding: 0px 5px;
+  border-radius: 10px;
+
+}
+
+.todo-container li button {
+  background-color: #dc3545;
+  border-radius: 50px;
+}
+
+.todo-list-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-list-container .buttons-container {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.todo-list-container .buttons-container button {
+  margin-left: 8px;
+}
+
+.buttons-container .edit {
+  background-color: #35dcdc;
+  border-radius: 50px;
+}
