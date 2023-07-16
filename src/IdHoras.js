@@ -11,6 +11,7 @@ function Todo() {
     const [newTodoTime, setNewTodoTime] = useState('');
     const [editTodoId, setEditTodoId] = useState(null);
     const [newTodoText, setNewTodoText] = useState('');
+    const [accumulatedHours, setAccumulatedHours] = useState([]);
     const hours = Array.from({ length: 13 }, (_, i) => i.toString().padStart(1, ''));
 
 
@@ -35,6 +36,15 @@ function Todo() {
     useEffect(() => {
         localStorage.setItem('todos', JSON.stringify(todos));
     }, [todos]);
+
+
+    useEffect(() => {
+        const storedTodos = localStorage.getItem('todos');
+        if (storedTodos) {
+            setTodos(JSON.parse(storedTodos));
+        }
+    }, []);
+
 
     // funcion para obtener los datos del input 
     const handleInputChange = (event) => {
@@ -109,55 +119,99 @@ function Todo() {
         setTodos(updatedTodos);
     };
 
+    // funcion para obtener los datos del localstorage y calcular horas
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+
+        // Agrupar los todos por ID y acumular las horas
+        const groupedTodos = todos.reduce((accumulator, todo) => {
+            const { text, time } = todo;
+            if (accumulator[text]) {
+                accumulator[text] += parseInt(time);
+            } else {
+                accumulator[text] = parseInt(time);
+            }
+            return accumulator;
+        }, {});
+
+        // Convertir el objeto en una lista de objetos { text, hours }
+        const updatedAccumulatedHours = Object.entries(groupedTodos).map(([text, hours]) => ({
+            text,
+            hours,
+        }));
+
+        setAccumulatedHours(updatedAccumulatedHours);
+    }, [todos]);
+
+    const getTotalHours = () => {
+        const totalHours = todos.reduce((accumulator, todo) => {
+          return accumulator + parseInt(todo.time);
+        }, 0);
+        return totalHours;
+      };
 
     // funcion para mostrar los datos en pantalla
     return (
-        // estructura de la pagina
-        <div className='todo-container'>
-            <h1>Ficha de Horas</h1>
-            <input className='todo-input'
-                type="texto"
-                value={newTodoText}
-                onChange={handleTextChange}
-                placeholder="Id..."
-            />
-            <input className='todo-input'
-                type="text"
-                value={newTodo}
-                onChange={handleInputChange}
-                placeholder="Agregar una nueva tarea..."
-            />
-            <select value={newTodoTime} onChange={handleTimeChange}>
-                <option value="">Horas</option>
-                {hours.map((hour) => (
-                    <option key={hour} value={hour}>
-                        {hour}
-                    </option>
-                ))}
-            </select>
+        <div className="container">
+            <div className='todo-container'>
+                <h1>Ficha de Horas</h1>
+                <input className='todo-input'
+                    type="texto"
+                    value={newTodoText}
+                    onChange={handleTextChange}
+                    placeholder="Id..."
+                />
+                <input className='todo-input'
+                    type="text"
+                    value={newTodo}
+                    onChange={handleInputChange}
+                    placeholder="Agregar una nueva tarea..."
+                />
+                <select value={newTodoTime} onChange={handleTimeChange}>
+                    <option value="">Horas</option>
+                    {hours.map((hour) => (
+                        <option key={hour} value={hour}>
+                            {hour}
+                        </option>
+                    ))}
+                </select>
 
-            <button onClick={editTodoId !== null ? handleUpdateTodo : handleAddTodo} disabled={!newTodo || !newTodoText || !newTodoTime}>
-                {editTodoId !== null ? 'Actualizar' : 'Cargar'}
-            </button>
+                <button onClick={editTodoId !== null ? handleUpdateTodo : handleAddTodo} disabled={!newTodo || !newTodoText || !newTodoTime}>
+                    {editTodoId !== null ? 'Actualizar' : 'Cargar'}
+                </button>
 
 
 
-            {/* funcion para mostrar los datos en pantalla*/}
-            <ul className="todo-list-container">
-                {todos.map((todo) => (
-                    <li key={todo.id}>
-                        <div>
-                            ID:{todo.text} - {todo.description} - {todo.time} Horas | {todo.date}
-                        </div>
-                        <div className="buttons-container">
-                        <button className='edit' onClick={() => handleEditTodo(todo.id)}>Editar</button>
-                        <button onClick={() => handleDeleteTodo(todo.id)}>Borrar</button>
-                        </div>
 
+                {/* funcion para mostrar los datos en pantalla*/}
+                <ul className="todo-list-container">
+                    {todos.map((todo) => (
+                        <li key={todo.id}>
+                            <div>
+                                ID:{todo.text} - {todo.description} - {todo.time} Horas | {todo.date}
+                            </div>
+                            <div className="buttons-container">
+                                <button className='edit' onClick={() => handleEditTodo(todo.id)}>Editar</button>
+                                <button onClick={() => handleDeleteTodo(todo.id)}>Borrar</button>
+                            </div>
+
+
+                        </li>
+
+                    ))}
+
+                </ul>
+
+
+            </div>
+            <div className="Horas">
+                {accumulatedHours.map((item) => (
+                    <li key={item.text}>
+                        <div>ID: {item.text} | Horas: {item.hours}</div>
                     </li>
                 ))}
-
-            </ul>
+                 <p>Total de Horas: {getTotalHours()}</p>
+            </div>
         </div>
     );
 }
