@@ -2,9 +2,5 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Todo from './IdHoras';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Todo />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const rootElement = document.getElementById('root');
+ReactDOM.createRoot(rootElement).render(<Todo />);

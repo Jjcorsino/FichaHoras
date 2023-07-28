@@ -6,7 +6,6 @@ import './IdHoras.css';
 function Todo() {
 
     // declaracion de variables y estados
-    const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState('');
     const [newTodoTime, setNewTodoTime] = useState('');
     const [editTodoId, setEditTodoId] = useState(null);
@@ -14,6 +13,12 @@ function Todo() {
     const [accumulatedHours, setAccumulatedHours] = useState([]);
     const hours = Array.from({ length: 13 }, (_, i) => i.toString().padStart(1, ''));
 
+
+    const initialTodos = localStorage.getItem('todos')
+    ? JSON.parse(localStorage.getItem('todos'))
+    : [];
+
+    const [todos, setTodos] = useState(initialTodos);
 
     // funcion para obtener la fecha actual del sistema
     const getCurrentDate = () => {
@@ -37,7 +42,7 @@ function Todo() {
         localStorage.setItem('todos', JSON.stringify(todos));
     }, [todos]);
 
-
+    // funcion para obtener los datos del input
     useEffect(() => {
         const storedTodos = localStorage.getItem('todos');
         if (storedTodos) {
